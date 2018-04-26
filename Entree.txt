@@ -1,0 +1,6 @@
+1
+Burger
+Pasta
+Stir Fry
+Sandwhich
+Pizza
