@@ -1,6 +1,6 @@
 //============================================================================
 // Name        : Main.cpp
-// Author      : Zach Taylor and Tess McCorkle
+// Author      : Zach Taylor
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
@@ -47,6 +47,7 @@ public:
 
 Student::Student(string cardInfo)
 {
+	idNum = cardInfo;
 	ifstream input;
 	cardInfo = cardInfo + ".txt";
 	input.open(cardInfo);
@@ -66,7 +67,7 @@ Student::Student(string cardInfo)
 void Student::createMenus(){ //read in menus and save info into vectors
     string placehold;
     ifstream input, input2, input3;
-    
+
     //create Entree menu
     input.open ("Entree.txt");
     input >> CostEntree; //Gets cost of Entree
@@ -77,7 +78,7 @@ void Student::createMenus(){ //read in menus and save info into vectors
         Entree.push_back(placehold);
     }
     input.close();
-    
+
     //create Drink menu
     input2.open ("Drinks.txt");
     input2 >> CostDrinks;
@@ -88,7 +89,7 @@ void Student::createMenus(){ //read in menus and save info into vectors
         Drinks.push_back(placehold);
     }
     input2.close();
-    
+
     //create Dessert
     input3.open ("Dessert.txt");
     input3 >> CostDessert;
@@ -104,58 +105,73 @@ void Student::createMenus(){ //read in menus and save info into vectors
 void Student::displayMenu(string menu){	//display the food menu for students
     if(menu.compare("Entree") == 0){
         cout << "--ENTREE MENU--" << endl;
-        for(int i = 0; i < Entree.size()-1; i++)
+        for(int i = 0; i < Entree.size(); i++)
         {
             cout << "  " << i << " " << Entree[i] << endl;
         }
+        cout << "  " <<Entree.size() << " To move to Drinks" << endl;
         buyFood(Entree);
     }
     else if(menu.compare("Drinks") == 0){
         cout << "\n--DRINK MENU--" << endl;
-        for(int i = 0; i < Drinks.size()-1; i++)
+        for(int i = 0; i < Drinks.size(); i++)
         {
-            cout << "  " << i-1 << " " << Drinks[i] << endl;
+            cout << "  " << i << " " << Drinks[i] << endl;
         }
+        cout << "  " << Drinks.size() << " To move to Dessert" << endl;
         buyFood(Drinks);
     }
     else if(menu.compare("Dessert") == 0){
         cout << "\n--DESSERT MENU--" << endl;
-        for(int i = 0; i < Dessert.size()-1; i++)
+        for(int i = 0; i < Dessert.size(); i++)
         {
             cout << "  " << i << " " << Dessert[i] << endl;
         }
+        cout << "  " << Dessert.size() << " To end order" << endl;
         buyFood(Dessert);
     }
-    
+
 
 }
 void Student::buyFood(vector<string> menu){
     int option = 1;
     cout << "You have " << swipes  << " swipes."<< endl;
-    while(option !=0){
-        
+    while(option !=menu.size()){
+
         cout << "What would you like to purchase?" << endl;
         cin >> option;
+        while(option < 0 || option > menu.size()) // error check for option
+        {
+        	cout << "You have chosen a wrong menu item\nPlease enter a correct item" << endl;
+        	cin >> option;
+        }
+        if(option == menu.size()){
+        	cout << "Moving onto next menu" << endl;
+        }
+        else{
         swipes--;
         studentMeal.push_back(menu[option]);
+        }
     }
-    swipes++;   //accounts for the 0 option when exiting the while loop
     //cout << "Updated Swipes: " << swipes << endl << endl;
     cout << "Your Order: " << endl;
-    
+
     for(int i = 0; i < studentMeal.size(); i++)
     {
         cout << studentMeal[i] << ", ";
     }
-    
+
 }
 
 void Student::updateFile(){
-    
+	ofstream output;
+	output.open( idNum + ".txt");
+	output << status << "\n" << swipes << "\n" << firstName << " " << lastName;
+	output.close();
 }
 
 class Employee: public User{
-    
+
     virtual void updateFile();
 };
 
@@ -172,7 +188,7 @@ int main() {
     int menuChoice;
 	string cardInfo;
     string parsedCardInfo;
-    
+
 	string input, employeePassword = "1234";
 
 
@@ -180,22 +196,24 @@ int main() {
 	cin >> userLevel;
 	cout << "Swipe card" << endl; // prints
 	cin >> cardInfo;
-    
+
     parsedCardInfo = cardInfo.substr(1,9);  //parses the extra characters from the student id
     //cout << parsedCardInfo; //for testing purposes
-    
+
     if(userLevel == 1){
         try{
             Student *s1 = new Student(parsedCardInfo);
+            //cout << parsedCardInfo; testing purposes
             studentMenu();
             cin >> choice;
-            
+
             switch(choice){
                 case 1:
                     s1->createMenus();
                     s1->displayMenu("Entree");
                     s1->displayMenu("Drinks");
                     s1->displayMenu("Dessert");
+                    s1->updateFile();
                     break;
                 case 2:
                     break;
@@ -229,7 +247,7 @@ int main() {
 		}
         }
         catch(int e){
-            cout << "ERROR " << e << ": You don't have acces to this" << endl;
+            cout << "ERROR " << e << ": You don't have access to this" << endl;
         }
 	}
 
