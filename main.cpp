@@ -39,7 +39,7 @@ public:
 	void newStudent(string cardInfo);
 	void purchaseSwipes();
 	void buyFood(vector<string> menu,double cost);
-	virtual void updateFile();
+	void updateFile();
 	virtual void feedback();
 	int error; //error for if a new profile
 };
@@ -249,7 +249,7 @@ void Employee::updateHours(double time){
 
 void Employee::calculateIncome(){
 	totalIncome = wage*hours;
-	cout << "Total earned: " << totalIncome << endl;
+	cout << "Total earned: $" << totalIncome << endl;
 }
 
 
@@ -411,6 +411,7 @@ int main() {
 					break;
 				}
 			}
+			delete s1;
 		}
 		catch(const char* e){
 			cout << e << endl;
@@ -472,6 +473,7 @@ int main() {
 					break;
 				}
 			}
+			delete manager;
 		}
 		catch(int e){
 			cout << "ERROR " << e << ": Must be an employee of Mizzou Dining Halls to access this information" << endl;
