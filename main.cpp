@@ -92,7 +92,8 @@ void Student::purchaseSwipes()
 	double MoreSwipes = 0;
 	cout << "How many swipes would you like to purchase" << endl;
 	cin >> MoreSwipes;
-	while(MoreSwipes <=0)
+	while(MoreSwipes <=0
+			)
 	{
 		cout << "Please enter a positive amount of swipes you'd like to purchase" << endl;
 		cin >> MoreSwipes;
