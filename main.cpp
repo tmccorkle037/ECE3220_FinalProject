@@ -1,11 +1,10 @@
 //============================================================================
-// Name        : Main.cpp
+// Name        : main.cpp
 // Author      : Zach Taylor and Tess McCorkle
 // Version     :
 // Copyright   : Your copyright notice
 // Description : Hello World in C++, Ansi-style
 //============================================================================
-
 
 #include <iostream>
 #include <stdlib.h>
@@ -229,15 +228,16 @@ void Employee::feedback(){
 	ifstream inFile;
 	int i = 0;
 	inFile.open("Feedback.txt");
-
+	cout << endl;
 	while(getline(inFile,message))
 	{
 		i++;
-		cout << i << "\t";
+		cout << i << ":\t";
 		cout << message << endl;
 	}
 
 	inFile.close();
+	cout <<  endl;
 }
 
 void Employee::updateHours(double time){
