@@ -12,6 +12,7 @@
 #include <string.h>
 #include <fstream>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 class User{ //abstract base class
@@ -26,7 +27,8 @@ public:
 };
 
 User::User(){
-	cout << "user created" << endl;
+
+	//ut << "user created" << endl;
 }
 
 class Student : public User{
@@ -119,7 +121,7 @@ Student::Student(string cardInfo)
 	}
 	else
 	{
-		error = 0;
+		error = 0;system("clear");
 		input >> status;
 		if(status.compare("Student") != 0){
 			throw "Not a Student";
@@ -139,7 +141,7 @@ void Student::buyFood(vector<string> menu, double cost){
 	cout << "You have " << swipes  << " swipes."<< endl;
 	while(option !=menu.size()){
 
-		cout << "What would you like to purchase?" << endl;
+		cout << "Enter the number of the item you would like to purchase:" << endl;
 		cin >> option;
 		while(option < 0 || option > menu.size()) // error check for option
 		{
@@ -308,7 +310,7 @@ void Menu::editMenu(){
 
 		break;
 	case 2:
-		cout << "Enter item to be deleted from the" << menuName << " Menu: ";
+		cout << "Enter item to be deleted from the " << menuName << " Menu: ";
 		cin >> dItem;
 		menu.erase(menu.begin() + dItem);
 		cout << "item was added" << endl;
@@ -343,31 +345,57 @@ void studentMenu(){    //display the option menu for students
 	cout << "4) To EXIT the program" << endl;
 }
 void employeeMenu(){
-	cout << "1) Update Menu\n2) Review Feedback\n3) Enter hours worked\n4) To EXIT the program" << endl;
+	cout << "***EMPLOYEE MENU***\n\n1) Update Menu\n2) Review Feedback\n3) Enter hours worked\n4) To EXIT the program" << endl;
 }
+
 
 int main() {
 	int userLevel; // student or employee
 	int choice = 0;
+	int i = 1;
 	double hours;
 	string cardInfo;
 	string parsedCardInfo;
 	string input;
 
+	system("clear");
+
 	Menu entreeMenu("Entree");
 	Menu drinkMenu("Drinks");
 	Menu dessertMenu("Dessert");
 
-	cout << "1)Student \n2)Employee" << endl;
+	cout << "---WELCOME TO MIZZOU DINING KIOSK---\n" << endl;
+	cout << "Are you a student or Employee?" << endl;
+
+	cout << "1)Student \n2)Employee\n\n"<< endl;
+	cout << "Learn how to use the kiosk:\n3)Help" << endl;
 	cin >> userLevel;
+
+	while(cin.fail()){	//error checks for a character
+		cin.clear();
+		cin.ignore();
+		cout << "Enter a numerical Value from 1-3: ";
+		cin >> userLevel;
+	}
+
+	while(userLevel >3 || userLevel < 0){
+		cout << "ERROR: must be a number between 1-3. Try again: ";
+		cin >> userLevel;
+	}
+
+
 	cout << "Swipe card" << endl; // prints
 	cin >> cardInfo;
+
+	system("clear");	//clear the screens so card info is not seen
 
 	parsedCardInfo = cardInfo.substr(1,9);  //parses the extra characters from the student id
 
 	if(userLevel == 1){
 		try{
 			Student *s1 = new Student(parsedCardInfo);
+
+			studentMenu();
 
 			while(choice !=4)
 			{
@@ -376,7 +404,6 @@ int main() {
 					choice = 5;
 				}
 				else{
-					studentMenu();
 					cin >> choice;
 				}
 
@@ -424,36 +451,51 @@ int main() {
 
 			cout << "Enter Password: ";
 			cin >> input;
+			system("clear");
 			//error check for wrong password
 			while( input.compare(manager->password)!= 0){
 				cout << "Wrong password. Try again" << endl;
 				cin >> input;
 			}
-			while( choice != 4){
+			system("clear");
+			while(choice != 4){
+
 				employeeMenu();
 				cin >> choice;
 
+				while(choice > 4 || choice < 1){
+					cout << "Enter a number between 1 and 4" << endl;
+					cin >> choice;
+				}
+
 				switch(choice){
 				case 1: //Update Menu
-				entreeMenu.displayMenu();
-				drinkMenu.displayMenu();
-				dessertMenu.displayMenu();
-				cout << "Which menu would you like to update? (Entree, Dessert, or Drink)" << endl;
-				cin >> input;
-				if(input.compare("Entree") == 0){
-					entreeMenu.editMenu();
-				}
-				else if(input.compare("Dessert") == 0){
-					dessertMenu.editMenu();
-				}
-				else if(input.compare("Drink") == 0){
-					drinkMenu.editMenu();
-				}
-				else{
-					cout << "Invalid Menu option. Try again." << endl;
+					entreeMenu.displayMenu();
+					drinkMenu.displayMenu();
+					dessertMenu.displayMenu();
+					cout << "Which menu would you like to update? (Entree, Dessert, or Drink)" << endl;
 					cin >> input;
-				}
-				break;
+
+					//system("clear")
+					while(i == 1){
+						if(input.compare("Entree") == 0){
+							entreeMenu.editMenu();
+							i=0;
+						}
+						else if(input.compare("Dessert") == 0){
+							dessertMenu.editMenu();
+							i=0;
+						}
+						else if(input.compare("Drink") == 0){
+							drinkMenu.editMenu();
+							i=0;
+						}
+						else{
+							cout << "Invalid Menu option. Try again." << endl;
+							cin >> input;
+						}
+					}
+					break;
 				case 2: //Review feedback
 					manager->feedback();
 					break;
@@ -467,6 +509,7 @@ int main() {
 						cin >> hours;
 					}
 					manager->updateHours(hours);
+					system("clear");
 					manager->calculateIncome();
 					break;
 				case 4:
