@@ -189,340 +189,352 @@ public:
 };
 
 Employee::Employee(string cardInfo){
-	idNum = cardInfo;
-	ifstream input;
-	cardInfo = cardInfo + ".txt";
-	input.open(cardInfo);
-
-	input >> status;
-	if(status.compare("Manager") != 0){
-		throw 1;
-	}
-	cout << "status: " << status << endl;
-	input >> swipes;
-	cout << "Swipes: " << swipes << endl;
-	input >> firstName;
-	input >> lastName;
-	cout << "Name: " << firstName << " " << lastName << endl;
-	input >> password;
-	input >> hours;
-	cout << "Hours worked: " << hours << endl;
-
-	input.close();
+    idNum = cardInfo;
+    ifstream input;
+    cardInfo = cardInfo + ".txt";
+    input.open(cardInfo);
+    
+    input >> status;
+    if(status.compare("Manager") != 0){
+        throw 1;
+    }
+    cout << "status: " << status << endl;
+    input >> swipes;
+    cout << "Swipes: " << swipes << endl;
+    input >> firstName;
+    input >> lastName;
+    cout << "Name: " << firstName << " " << lastName << endl;
+    input >> password;
+    input >> hours;
+    cout << "Hours worked: " << hours << endl;
+    
+    input.close();
 }
 
 void Employee::updateFile(){
-	ofstream outFile;
-	outFile.open(idNum + ".txt");
-
-	outFile << status << "\n";
-	outFile << swipes << "\n";
-	outFile << firstName << "\n";
-	outFile << lastName << "\n";
-	outFile << password << "\n";
-	outFile << hours << "\n";
-	cout << "File Updated" << endl;
-
-	outFile.close();
+    ofstream outFile;
+    outFile.open(idNum + ".txt");
+    
+    outFile << status << "\n";
+    outFile << swipes << "\n";
+    outFile << firstName << "\n";
+    outFile << lastName << "\n";
+    outFile << password << "\n";
+    outFile << hours << "\n";
+    cout << "File Updated" << endl;
+    
+    outFile.close();
 }
 
 void Employee::feedback(){
-	string message;
-	ifstream inFile;
-	int i = 0;
-	inFile.open("Feedback.txt");
-	cout << endl;
-	while(getline(inFile,message))
-	{
-		i++;
-		cout << i << ":\t";
-		cout << message << endl;
-	}
-
-	inFile.close();
-	cout <<  endl;
+    string message;
+    ifstream inFile;
+    int i = 0;
+    inFile.open("Feedback.txt");
+    cout << endl;
+    while(getline(inFile,message))
+    {
+        i++;
+        cout << i << ":\t";
+        cout << message << endl;
+    }
+    
+    inFile.close();
+    cout <<  endl;
 }
 
 void Employee::updateHours(double time){
-	hours = hours + time;
-	cout << "Your hours have been documented" << endl;
-	updateFile();
-
+    hours = hours + time;
+    cout << "Your hours have been documented" << endl;
+    updateFile();
+    
 }
 
 void Employee::calculateIncome(){
-	totalIncome = wage*hours;
-	cout << "Total earned: $" << totalIncome << endl;
+    totalIncome = wage*hours;
+    cout << "Total earned: $" << totalIncome << endl;
 }
 
 
 class Menu{
 public:
-	string menuName;
-	double cost;
-	vector<string> menu;
-	Menu(string menuType);
-	void displayMenu();
-	void editMenu();
-	void updateMenu();
+    string menuName;
+    double cost;
+    vector<string> menu;
+    Menu(string menuType);
+    void displayMenu();
+    void editMenu();
+    void updateMenu();
 };
 
 Menu::Menu(string menuType){ //read in menus and save info into vectors
-	menuName = menuType;
-	string item;
-	ifstream input;
-
-	input.open (menuType + ".txt");
-	input >> cost;
-	//cout << "Each item is " << cost << " Swipe(s)" << endl;
-	while(getline(input,item))
-	{
-		input >> item;
-		menu.push_back(item);
-	}
-	input.close();
-	//    cout << menuType << " menu created." << endl;
+    menuName = menuType;
+    string item;
+    ifstream input;
+    
+    input.open (menuType + ".txt");
+    input >> cost;
+    //cout << "Each item is " << cost << " Swipe(s)" << endl;
+    while(getline(input,item))
+    {
+        input >> item;
+        menu.push_back(item);
+    }
+    input.close();
+    //    cout << menuType << " menu created." << endl;
 }
 
 void Menu::displayMenu(){    //display the food menu for students
-	cout << "---" << menuName << " Menu---" << endl;
-	for( int i = 0; i < menu.size(); i++){
-		cout << "  " << i << " " << menu[i] << endl;
-	}
-	cout <<"  " << menu.size() << " to go to next menu" << endl << endl;
+    cout << "---" << menuName << " Menu---" << endl;
+    for( int i = 0; i < menu.size(); i++){
+        cout << "  " << i << " " << menu[i] << endl;
+    }
+    cout <<"  " << menu.size() << " to go to next menu" << endl << endl;
 }
 
 void Menu::editMenu(){
-	int option;
-	string item;
-	int dItem;
-
-	cout << "1) Add item 2) Delete item" << endl;
-	cin >> option;
-
-	switch(option){
-	case 1:
-		cout << "Enter item to be added to the " << menuName << " Menu: " << endl;
-		cin >> item;
-		menu.push_back(item);
-		updateMenu();
-		displayMenu();
-
-		break;
-	case 2:
-		cout << "Enter item to be deleted from the " << menuName << " Menu: ";
-		cin >> dItem;
-		menu.erase(menu.begin() + dItem);
-		cout << "item was added" << endl;
-		displayMenu();
-		updateMenu();
-
-	}
+    int option;
+    string item;
+    int dItem;
+    
+    cout << "1) Add item 2) Delete item" << endl;
+    cin >> option;
+    
+    switch(option){
+        case 1:
+            cout << "Enter item to be added to the " << menuName << " Menu: " << endl;
+            cin >> item;
+            menu.push_back(item);
+            updateMenu();
+            displayMenu();
+            
+            break;
+        case 2:
+            cout << "Enter item to be deleted from the " << menuName << " Menu: ";
+            cin >> dItem;
+            menu.erase(menu.begin() + dItem);
+            cout << "item was added" << endl;
+            displayMenu();
+            updateMenu();
+            
+    }
 }
 
 void Menu::updateMenu(){
-	ofstream output;
-	output.open( menuName + ".txt");
-	output << cost;
-	output << "\n";
-
-	for( int i = 0; i < menu.size(); i++)
-	{
-		if(i == menu.size()-1)
-		{
-			output<< menu[i];
-		}
-		else
-		{
-			output << menu[i] << "\n";
-		}
-	}
-	output.close();
+    ofstream output;
+    output.open( menuName + ".txt");
+    output << cost;
+    output << "\n";
+    
+    for( int i = 0; i < menu.size(); i++)
+    {
+        if(i == menu.size()-1)
+        {
+            output<< menu[i];
+        }
+        else
+        {
+            output << menu[i] << "\n";
+        }
+    }
+    output.close();
 }
 
 void studentMenu(){    //display the option menu for students
-	cout << endl << "1) Buy Food\n2) Buy Swipes\n3) Submit feedback" << endl;
-	cout << "4) To EXIT the program" << endl;
+    cout << endl << "1) Buy Food\n2) Buy Swipes\n3) Submit feedback" << endl;
+    cout << "4) To EXIT the program" << endl;
 }
 void employeeMenu(){
-	cout << "***EMPLOYEE MENU***\n\n1) Update Menu\n2) Review Feedback\n3) Enter hours worked\n4) To EXIT the program" << endl;
+    cout << "***EMPLOYEE MENU***\n\n1) Update Menu\n2) Review Feedback\n3) Enter hours worked\n4) To EXIT the program" << endl;
 }
 
+void mainMenu(){
+    cout << "---WELCOME TO THE MIZZOU DINING KIOSK---\n" << endl;
+    cout << "Are you a student or Employee?" << endl;
+    
+    cout << "1)Student \n2)Employee\n"<< endl;
+    cout << "3)Learn how to use the kiosk" << endl;
+}
+void help(){
+    system("clear");
+    cout << "--HELP MENU--" << endl;
+    cout << "If you're a student:\nLet us know your a student, then swipe your card so we can access your account information. Next you will be able to buy food, buy swipes, or leave feedback about your dining experience. Follow the on screen commands to make your menu options." << endl;
+    cout << "\nIf you're an employee:\nLet us know you're an employee then swipe your card so we can access your account information. Next enter your employee password to access the employee menu. Once you get to the menu, follow the on screen commands to update the menu, view student feedback, or update your hours." << endl;
+}
 
 int main() {
-	int userLevel; // student or employee
-	int choice = 0;
-	int i = 1;
-	double hours;
-	string cardInfo;
-	string parsedCardInfo;
-	string input;
-
-	system("clear");
-
-	Menu entreeMenu("Entree");
-	Menu drinkMenu("Drinks");
-	Menu dessertMenu("Dessert");
-
-	cout << "---WELCOME TO MIZZOU DINING KIOSK---\n" << endl;
-	cout << "Are you a student or Employee?" << endl;
-
-	cout << "1)Student \n2)Employee\n\n"<< endl;
-	cout << "Learn how to use the kiosk:\n3)Help" << endl;
-	cin >> userLevel;
-
-	while(cin.fail()){	//error checks for a character
-		cin.clear();
-		cin.ignore();
-		cout << "Enter a numerical Value from 1-3: ";
-		cin >> userLevel;
-	}
-
-	while(userLevel >3 || userLevel < 0){
-		cout << "ERROR: must be a number between 1-3. Try again: ";
-		cin >> userLevel;
-	}
-
-
-	cout << "Swipe card" << endl; // prints
-	cin >> cardInfo;
-
-	system("clear");	//clear the screens so card info is not seen
-
-	parsedCardInfo = cardInfo.substr(1,9);  //parses the extra characters from the student id
-
-	if(userLevel == 1){
-		try{
-			Student *s1 = new Student(parsedCardInfo);
-
-			studentMenu();
-
-			while(choice !=4)
-			{
-				if(s1->error == 1)
-				{
-					choice = 5;
-				}
-				else{
-					cin >> choice;
-				}
-
-				switch(choice){
-				case 1: // Buy food
-				entreeMenu.displayMenu();
-				s1->buyFood(entreeMenu.menu, entreeMenu.cost);
-				drinkMenu.displayMenu();
-				s1->buyFood(drinkMenu.menu, drinkMenu.cost);
-				dessertMenu.displayMenu();
-				s1->buyFood(dessertMenu.menu, dessertMenu.cost);
-				s1->updateFile();
-				break;
-				case 2: // Buying swipes
-					s1->purchaseSwipes();
-					s1->updateFile();
-					break;
-				case 3: // Feedback
-					s1->feedback();
-					break;
-				case 4:
-					cout << "Thank you for choosing Mizzou Dining Halls" << endl;
-					break;
-				case 5: //New student
-					if(s1->error != 1)
-					{
-						cout << "You have already created a profile" << endl;
-						cout << "Please select a valid option" << endl;
-						break;
-					}
-					cout << "Thanks for creating a new profile" << endl;
-					s1->newStudent(parsedCardInfo);
-					break;
-				}
-			}
-			delete s1;
-		}
-		catch(const char* e){
-			cout << e << endl;
-		}
-	}
-	else if(userLevel == 2){
-		try{    //try making a manager object
-			Employee *manager = new Employee(parsedCardInfo);
-
-			cout << "Enter Password: ";
-			cin >> input;
-			system("clear");
-			//error check for wrong password
-			while( input.compare(manager->password)!= 0){
-				cout << "Wrong password. Try again" << endl;
-				cin >> input;
-			}
-			system("clear");
-			while(choice != 4){
-
-				employeeMenu();
-				cin >> choice;
-
-				while(choice > 4 || choice < 1){
-					cout << "Enter a number between 1 and 4" << endl;
-					cin >> choice;
-				}
-
-				switch(choice){
-				case 1: //Update Menu
-					entreeMenu.displayMenu();
-					drinkMenu.displayMenu();
-					dessertMenu.displayMenu();
-					cout << "Which menu would you like to update? (Entree, Dessert, or Drink)" << endl;
-					cin >> input;
-
-					//system("clear")
-					while(i == 1){
-						if(input.compare("Entree") == 0){
-							entreeMenu.editMenu();
-							i=0;
-						}
-						else if(input.compare("Dessert") == 0){
-							dessertMenu.editMenu();
-							i=0;
-						}
-						else if(input.compare("Drink") == 0){
-							drinkMenu.editMenu();
-							i=0;
-						}
-						else{
-							cout << "Invalid Menu option. Try again." << endl;
-							cin >> input;
-						}
-					}
-					break;
-				case 2: //Review feedback
-					manager->feedback();
-					break;
-				case 3: //Hours worked
-					cout << "Enter number of hours: " << endl;
-					cin >> hours;
-					while(hours <= 0)
-					{
-						cout << "Please enter a valid number of hours" << endl;
-						cout << "Input should be above 0 hours" << endl;
-						cin >> hours;
-					}
-					manager->updateHours(hours);
-					system("clear");
-					manager->calculateIncome();
-					break;
-				case 4:
-					cout << "Thank you for choosing Mizzou Dining Halls" << endl;
-					break;
-				}
-			}
-			delete manager;
-		}
-		catch(int e){
-			cout << "ERROR " << e << ": Must be an employee of Mizzou Dining Halls to access this information" << endl;
-		}
-
-	}
-	return 0;
+    int userLevel; // student or employee
+    int choice = 0;
+    int i = 1;
+    double hours;
+    string cardInfo;
+    string parsedCardInfo;
+    string input;
+    
+    system("clear");
+    
+    //creates food menus for the students to select from
+    Menu entreeMenu("Entree");
+    Menu drinkMenu("Drinks");
+    Menu dessertMenu("Dessert");
+    
+    mainMenu();
+    cin >> userLevel;
+    
+    while(cin.fail()){	//error checks for a character
+        cin.clear();
+        cin.ignore();
+        cout << "Enter a numerical value from 1-3: ";
+        cin >> userLevel;
+    }
+    
+    while(userLevel >3 || userLevel < 0){
+        cout << "ERROR: must be a number between 1-3. Try again: ";
+        cin >> userLevel;
+    }
+      //parses the extra characters from the student id
+    //system("clear");    //clear the screens so card info is not seen
+    if(userLevel == 1){ //student user
+        cout << "Swipe card" << endl; // prints
+        cin >> cardInfo;
+        parsedCardInfo = cardInfo.substr(1,9);
+        
+        try{
+            Student *s1 = new Student(parsedCardInfo);
+            studentMenu();
+            while(choice !=4)
+            {
+                if(s1->error == 1)
+                {
+                    choice = 5;
+                }
+                else{
+                    cin >> choice;
+                }
+                
+                switch(choice){
+                    case 1: // Buy food
+                        entreeMenu.displayMenu();
+                        s1->buyFood(entreeMenu.menu, entreeMenu.cost);
+                        drinkMenu.displayMenu();
+                        s1->buyFood(drinkMenu.menu, drinkMenu.cost);
+                        dessertMenu.displayMenu();
+                        s1->buyFood(dessertMenu.menu, dessertMenu.cost);
+                        s1->updateFile();
+                        break;
+                    case 2: // Buying swipes
+                        s1->purchaseSwipes();
+                        s1->updateFile();
+                        break;
+                    case 3: // Feedback
+                        s1->feedback();
+                        break;
+                    case 4:
+                        cout << "Thank you for choosing Mizzou Dining Halls" << endl;
+                        break;
+                    case 5: //New student
+                        if(s1->error != 1)
+                        {
+                            cout << "You have already created a profile" << endl;
+                            cout << "Please select a valid option" << endl;
+                            break;
+                        }
+                        cout << "Thanks for creating a new profile" << endl;
+                        s1->newStudent(parsedCardInfo);
+                        break;
+                }
+            }
+            delete s1;
+        }
+        catch(const char* e){
+            cout << e << endl;
+        }
+    }
+    else if(userLevel == 2){    //Employee user
+        cout << "Swipe card" << endl; // prints
+        cin >> cardInfo;
+        parsedCardInfo = cardInfo.substr(1,9);
+        system("clear");
+        
+        try{    //try making a manager object
+            Employee *manager = new Employee(parsedCardInfo);
+            
+            cout << "Enter Password: ";
+            cin >> input;
+            system("clear");
+            //error check for wrong password
+            while( input.compare(manager->password)!= 0){
+                cout << "Wrong password. Try again" << endl;
+                cin >> input;
+            }
+            system("clear");
+            while(choice != 4){
+                
+                employeeMenu();
+                cin >> choice;
+                
+                while(choice > 4 || choice < 1){
+                    cout << "Enter a number between 1 and 4" << endl;
+                    cin >> choice;
+                }
+                
+                switch(choice){
+                    case 1: //Update Menu
+                        entreeMenu.displayMenu();
+                        drinkMenu.displayMenu();
+                        dessertMenu.displayMenu();
+                        cout << "Which menu would you like to update? (Entree, Dessert, or Drink)" << endl;
+                        cin >> input;
+                        
+                        //system("clear")
+                        while(i == 1){
+                            if(input.compare("Entree") == 0){
+                                entreeMenu.editMenu();
+                                i=0;
+                            }
+                            else if(input.compare("Dessert") == 0){
+                                dessertMenu.editMenu();
+                                i=0;
+                            }
+                            else if(input.compare("Drink") == 0){
+                                drinkMenu.editMenu();
+                                i=0;
+                            }
+                            else{
+                                cout << "Invalid Menu option. Try again." << endl;
+                                cin >> input;
+                            }
+                        }
+                        break;
+                    case 2: //Review feedback
+                        manager->feedback();
+                        break;
+                    case 3: //Hours worked
+                        cout << "Enter number of hours: " << endl;
+                        cin >> hours;
+                        while(hours <= 0)
+                        {
+                            cout << "Please enter a valid number of hours" << endl;
+                            cout << "Input should be above 0 hours" << endl;
+                            cin >> hours;
+                        }
+                        manager->updateHours(hours);
+                        system("clear");
+                        manager->calculateIncome();
+                        break;
+                    case 4:
+                        cout << "Thank you for choosing Mizzou Dining Halls" << endl;
+                        break;
+                }
+            }
+            delete manager;
+        }
+        catch(int e){
+            cout << "ERROR " << e << ": Must be an employee of Mizzou Dining Halls to access this information" << endl;
+        }
+    }
+    else if(userLevel == 3){
+        help();
+    }
+return 0;
 }
