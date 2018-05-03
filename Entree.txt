@@ -2,5 +2,5 @@
 Burger
 Pasta
 Stir Fry
-Sandwhich
+Sandwich
 Pizza
