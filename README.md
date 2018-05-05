@@ -1,3 +1,2 @@
 # ECE3220_FinalProject
-To compile our project make sure to use the -std=c++11 tag in the command line. Also all of the text files need to be in the same folder as the main program. Once the program is compiled, run it with no command line arguements. 
-
+To compile our project make sure to use the -std=c++11 tag in the command line. Also all of the text files need to be in the same folder as the main program. Once the program is compiled, run it with no command line arguements. If you don't have a card reader at hand instead of swiping your card when given the "Swipe card" command enter your student number with a ";" semicolon in front of it. Example ;012446584. Also while running the program the only account that currently has access to any of the employee functions is ID ;018119094. So to test out any of those functions make sure to enter that ID correctly. 
